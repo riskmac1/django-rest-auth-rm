@@ -12,7 +12,13 @@ def import_callable(path_or_callable):
 
 
 def default_create_token(token_model, user, serializer):
-    token, _ = token_model.objects.get_or_create(user=user)
+    try:
+        print("default_create_token")
+        token_model.objects.get(user=user).delete()
+        token, _ = token_model.objects.get_or_create(user=user)
+    except token_model.DoesNotExist:
+       token, _ = token_model.objects.get_or_create(user=user)
+    #token, _ = token_model.objects.get_or_create(user=user)
     return token
 
 
